@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/testapp -Dhttp.port=$PORT
+web: target/universal/stage/bin/gitlehunt -Dhttp.port=$PORT
