@@ -5,7 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-POST     /observation                           controllers.Application.registerObservation()
+POST     /observations                           controllers.Application.registerObservation()
+GET     /observations                           controllers.Application.getObservations()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

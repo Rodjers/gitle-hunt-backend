@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 import play.data.format.Formats;
@@ -8,6 +9,8 @@ import play.db.ebean.Model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -35,6 +38,24 @@ public class Observation extends Model {
 
     @Formats.DateTime(pattern="yyyy-MM-dd-HH-mm-ss")
     public Date timestamp;
+
+    public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
+
+    public static ObjectNode all(){
+
+        List<Observation> observationList = find.findList();
+
+        ObjectNode result = Json.newObject();
+
+        Iterator<Observation> it = observationList.iterator();
+        int i = 0;
+        while(it.hasNext()){
+            result.put(Integer.toString(i), it.next().asJson());
+            i++;
+        }
+
+        return result;
+    }
 
     public ObjectNode asJson(){
 

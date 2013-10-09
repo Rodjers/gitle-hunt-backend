@@ -31,4 +31,8 @@ public class Application extends Controller {
 
     }
 
+    public static Result getObservations(){
+        return ok(Observation.all().toString());
+    }
+
 }
