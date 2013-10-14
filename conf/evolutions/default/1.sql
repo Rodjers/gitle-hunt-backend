@@ -5,11 +5,11 @@
 
 create table observation (
   id                        bigint not null,
-  amount                    integer,
-  animal                    varchar(255),
-  longitude                 bigint,
-  latitude                  bigint,
-  timestamp                 timestamp,
+  amount                    integer not null,
+  animal                    varchar(255) not null,
+  longitude                 double not null,
+  latitude                  double not null,
+  timestamp                 varchar(255),
   constraint pk_observation primary key (id))
 ;
 

@@ -1,16 +1,20 @@
 package models;
 
 import com.avaje.ebean.Page;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import controllers.exceptions.InvalidObservationException;
 import play.libs.Json;
 import play.data.format.Formats;
 import play.db.ebean.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -28,16 +32,41 @@ public class Observation extends Model {
     @Id
     public Long id;
 
+    @Column(nullable = false)
     public int amount;
 
+    @Column(nullable = false)
     public String animal;
 
-    public long longitude;
+    @Column(nullable = false)
+    public double longitude;
 
-    public long latitude;
+    @Column(nullable = false)
+    public double latitude;
 
-    @Formats.DateTime(pattern="yyyy-MM-dd-HH-mm-ss")
-    public Date timestamp;
+    @Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
+    public String timestamp;
+
+    public Observation(int amount, String animal, double longitude, double latitude){
+
+        this.amount = amount;
+        this.animal = animal;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = new Date();
+        this.timestamp = dateFormat.format(date);
+
+    }
+    public Observation(JsonNode observation) throws InvalidObservationException {
+
+        if(observation.size() != 4){
+            throw new InvalidObservationException(observation.size(), 4);
+        }
+
+
+    }
 
     public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
 
@@ -61,10 +90,24 @@ public class Observation extends Model {
 
         ObjectNode result = Json.newObject();
 
+        result.put("id", this.id);
         result.put("amount", this.amount);
         result.put("animal", this.animal);
         result.put("longitude", this.longitude);
         result.put("latitude", this.latitude);
+        Date date = null;
+        try {
+            DateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-1"));
+            date = dateFormat.parse(this.timestamp);
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        if(date != null) {
+            result.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+        }
+
+
 
         return result;
     }
