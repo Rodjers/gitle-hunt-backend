@@ -1,33 +1,17 @@
-@(message: String)
+@(title: String)
 
-@main(message) {
+<!DOCTYPE html>
 
-<script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQqIAaSyqBUauxZyyZ_3Kv3UGOzUfXkqo&sensor=false">
-</script>
-<script type="text/javascript">
-
-    function initialize() {
-        var LatLong = new google.maps.LatLng(60.25, 7.5);
-        var mapOptions = {
-            center: LatLong,
-            zoom: 13,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-                mapOptions);
-        var markerOptions = {
-            map: map,
-            position: LatLong
-        }
-        var marker = new google.maps.Marker(markerOptions);
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-
-
-
-
-</script>
-<div id="map-canvas"/>
-
-}
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQqIAaSyqBUauxZyyZ_3Kv3UGOzUfXkqo&sensor=false"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/maps.js")"></script>
+    </head>
+    <body>
+        <div id="map-canvas"/>
+    </body>
+</html>
