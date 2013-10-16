@@ -94,4 +94,8 @@ public class Application extends Controller {
         return ok(result.toString());
     }
 
+    public static Result wrongMethod(){
+        return status(METHOD_NOT_ALLOWED);
+    }
+
 }
