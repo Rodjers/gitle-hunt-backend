@@ -1,6 +1,5 @@
 package models;
 
-import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import controllers.exceptions.InvalidObservationException;
@@ -18,11 +17,9 @@ import java.util.*;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: oddgeir
+ * Author: oddgeir
  * Date: 10/9/13
  * Time: 7:35 PM
- * To change this template use File | Settings | File Templates.
  */
 @Entity
 public class Observation extends Model {
@@ -47,32 +44,100 @@ public class Observation extends Model {
     @Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
     public String timestamp;
 
-    public Observation(int amount, String animal, double longitude, double latitude){
+//    public Observation(int amount, String animal, double longitude, double latitude){
+//
+//        this.amount = amount;
+//        this.animal = animal;
+//        this.longitude = longitude;
+//        this.latitude = latitude;
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        Date date = new Date();
+//        this.timestamp = dateFormat.format(date);
+//
+//    }
 
-        this.amount = amount;
-        this.animal = animal;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = new Date();
-        this.timestamp = dateFormat.format(date);
-
-    }
     public Observation(JsonNode observation) throws InvalidObservationException {
 
-        if(observation.size() != 4){
-            throw new InvalidObservationException(observation.size(), 4);
+        if(observation.size() > 5){
+            throw new InvalidObservationException(observation.size(), 5);
+        }
+
+        if(observation.has("amount")){
+            this.amount = observation.findPath("Parameter \'amount\' is missing").intValue();
+        }
+        else {
+            throw new InvalidObservationException("amount");
+        }
+
+        if(observation.has("animal")){
+            this.animal = observation.findPath("animal").textValue();
+        }
+        else {
+            throw new InvalidObservationException("Parameter \'animal\' is missing");
+        }
+
+        if(observation.has("latitude")){
+            this.latitude = observation.findPath("latitude").doubleValue();
+        }
+        else {
+            throw new InvalidObservationException("Parameter \'latitude\' is missing");
+        }
+
+        if(observation.has("longitude")){
+            this.longitude = observation.findPath("longitude").doubleValue();
+        }
+        else {
+            throw new InvalidObservationException("Parameter \'longitude\' is missing");
+        }
+
+        if(observation.has("timestamp")){
+            String _timeStamp = observation.findPath("timestamp").textValue();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date;
+            try {
+                date = dateFormat.parse(_timeStamp);
+            } catch (ParseException e) {
+                throw new InvalidObservationException(_timeStamp + "is an invalid time format. Expected: yyy-MM-dd HH:mm:ss");
+            }
+            this.timestamp = dateFormat.format(date);
+        }
+        else {
+            throw new InvalidObservationException("Parameter \'timestamp\' is missing");
         }
 
 
+
     }
 
-    public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
+    public static Finder<Long,Observation> find = new Finder<>(Long.class, Observation.class);
 
     public static ObjectNode all(){
 
         List<Observation> observationList = find.findList();
+
+        ObjectNode result = Json.newObject();
+
+        Iterator<Observation> it = observationList.iterator();
+        int i = 0;
+        while(it.hasNext()){
+            result.put(Integer.toString(i), it.next().asJson());
+            i++;
+        }
+
+        return result;
+    }
+
+    public static ObjectNode getSquare(double north, double west, double south, double east){
+
+        List<Observation> allList = find.findList();
+
+        List observationList = find
+                .where().gt("longitude", west)
+                .where().lt("longitude", east)
+                .where().gt("latitude", south)
+                .where().lt("latitude", north)
+                .findList();
 
         ObjectNode result = Json.newObject();
 
@@ -95,17 +160,7 @@ public class Observation extends Model {
         result.put("animal", this.animal);
         result.put("longitude", this.longitude);
         result.put("latitude", this.latitude);
-        Date date = null;
-        try {
-            DateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-1"));
-            date = dateFormat.parse(this.timestamp);
-        } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        if(date != null) {
-            result.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
-        }
+        result.put("timestamp", this.timestamp);
 
 
 

@@ -9,8 +9,8 @@ package controllers.exceptions;
  */
 public class InvalidObservationException extends Exception {
 
-    public InvalidObservationException(String missingParameter){
-        super(missingParameter + " is missing");
+    public InvalidObservationException(String message){
+        super(message);
     }
 
     public InvalidObservationException(int size, int expectedSize){

@@ -1,13 +1,19 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import controllers.exceptions.InvalidObservationException;
 import models.Observation;
-import org.omg.CORBA.DynAnyPackage.Invalid;
-import play.*;
 import play.mvc.*;
+import views.html.index;
 
-import views.html.*;
+import java.util.Map;
+
+/**
+ * Author: oddgeir
+ * Date: 10/9/13
+ * Time: 7:35 PM
+ */
 
 public class Application extends Controller {
 
@@ -22,13 +28,19 @@ public class Application extends Controller {
 
         JsonNode jsonBody = body.asJson();
 
-
-        int amount = jsonBody.findPath("amount").intValue();
-        String animal = jsonBody.findPath("animal").textValue();
-        double longitude = jsonBody.findPath("longitude").doubleValue();
-        double latitude = jsonBody.findPath("latitude").doubleValue();
-
-        Observation observation = new Observation(amount, animal, longitude, latitude);
+//
+//        int amount = jsonBody.findPath("amount").intValue();
+//        String animal = jsonBody.findPath("animal").textValue();
+//        double longitude = jsonBody.findPath("longitude").doubleValue();
+//        double latitude = jsonBody.findPath("latitude").doubleValue();
+//
+//        Observation observation = new Observation(amount, animal, longitude, latitude);
+        Observation observation = null;
+        try {
+            observation = new Observation(jsonBody);
+        } catch (InvalidObservationException e) {
+            return badRequest(e.getMessage());
+        }
 
         observation.save();
 
@@ -38,6 +50,48 @@ public class Application extends Controller {
 
     public static Result getObservations(){
         return ok(Observation.all().toString());
+    }
+
+    public static Result getSquare(String north, String west, String south, String east){
+
+        double _north;
+        double _west;
+        double _south;
+        double _east;
+
+        try {
+            _north = Double.valueOf(north);
+        }
+        catch (Exception e){
+                return badRequest("parameter north is invalid");
+        }
+
+        try {
+            _west = Double.valueOf(west);
+        }
+        catch (Exception e){
+            return badRequest("parameter west is invalid");
+        }
+
+        try {
+            _south = Double.valueOf(south);
+        }
+        catch (Exception e){
+            return badRequest("parameter south is invalid");
+        }
+
+        try {
+            _east = Double.valueOf(east);
+        }
+        catch (Exception e){
+            return badRequest("parameter east is invalid");
+        }
+
+        ObjectNode result = Observation.getSquare(_north, _west, _south, _east);
+
+
+
+        return ok(result.toString());
     }
 
 }
