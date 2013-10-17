@@ -42,13 +42,11 @@ function drawCollection(observations, map){
         }));
 
         var contentString = '<div>' +
-            '<p>Animal: ' +
+            'Animal: ' +
             observations[i].animal +
-            '</p>' +
             '<br>' +
-            '<p>Amount: ' +
+            'Amount: ' +
             observations[i].amount +
-            '</p>' +
             '</div>';
 
         infoWindows.push(new google.maps.InfoWindow({

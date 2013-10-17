@@ -64,10 +64,10 @@ public class Observation extends Model {
         }
 
         if(observation.has("amount")){
-            this.amount = observation.findPath("Parameter \'amount\' is missing").intValue();
+            this.amount = observation.findPath("amount").intValue();
         }
         else {
-            throw new InvalidObservationException("amount");
+            throw new InvalidObservationException("Parameter \'amount\' is missing");
         }
 
         if(observation.has("animal")){
