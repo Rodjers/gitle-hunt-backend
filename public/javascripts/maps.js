@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var map;
+
 function initialize() {
 
     var LatLong = new google.maps.LatLng(60.25, 7.5);
@@ -31,16 +32,41 @@ function initialize() {
 function drawCollection(observations, map){
 
     var i = 0;
+    var markers = [];
+    var infoWindows = [];
 
     while(observations[i] != undefined){
-        marker = new google.maps.Marker({
+        markers.push(new google.maps.Marker({
             position: new google.maps.LatLng(observations[i].latitude, observations[i].longitude),
             map: map
+        }));
 
-        });
+        var contentString = '<div>' +
+            '<p>Animal: ' +
+            observations[i].animal +
+            '</p>' +
+            '<br>' +
+            '<p>Amount: ' +
+            observations[i].amount +
+            '</p>' +
+            '</div>';
+
+        infoWindows.push(new google.maps.InfoWindow({
+            content: contentString
+        }));
+
         i++;
     }
+    for (var n = 0; n < markers.length; n++){
+        placeInfoWindow(markers[n], infoWindows[n])
+        }
+}
+function placeInfoWindow(marker, thisWindow) {
 
+    google.maps.event.addListener(marker, 'click', function()
+    {
+        thisWindow.open(map,marker);
+    });
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
