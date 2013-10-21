@@ -1,1 +1,11 @@
-#map-canvas { height: 400px; width: 400px}
+#map-canvas {   height: 500px;}
+#frame {
+    height: 100%;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;}
+.registerForm {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}

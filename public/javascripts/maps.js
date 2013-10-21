@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var map;
+var currentMarker;
 
 function initialize() {
 
@@ -17,18 +18,27 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
+
+    currentMarker = new google.maps.Marker({
+        map: map
+    });
+
     google.maps.event.addListener(map, 'tilesloaded', function() {
         var north = map.getBounds().getNorthEast().lat();
         var west = map.getBounds().getSouthWest().lng();
         var south = map.getBounds().getSouthWest().lat();
         var east = map.getBounds().getNorthEast().lng();
-    $.getJSON( "square?north=" + north + "&south=" + south + "&west=" + west + "&east=" + east, function( data ) {
-        drawCollection(data, map);
+
+        $.getJSON( "square?north=" + north + "&south=" + south + "&west=" + west + "&east=" + east, function( data ) {
+            drawCollection(data, map);
+        });
     });
-});
 
-
+    google.maps.event.addListener(map, 'click', function(e) {
+        currentMarker.setPosition(e.latLng);
+    });
 }
+
 function drawCollection(observations, map){
 
     var i = 0;
@@ -67,6 +77,33 @@ function placeInfoWindow(marker, thisWindow) {
     });
 }
 google.maps.event.addDomListener(window, 'load', initialize);
+
+function registerObservation(animal, amount) {
+
+    var observation = {};
+    var dateTime = new Date();
+    var timestamp = dateTime.getFullYear() + "-" + dateTime.getMonth() + "-" + dateTime.getDay() + " " +
+        dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds()
+    observation.animal = $("#animal").val();
+    observation.amount = +($("#amount").val());
+    observation.timestamp = timestamp;
+    observation.latitude = currentMarker.getPosition().lat();
+    observation.longitude = currentMarker.getPosition().lng();
+
+    console.log(JSON.stringify(observation));
+
+
+    $.ajax({
+        type: "POST",
+        url: "observations",
+        data: JSON.stringify(observation),
+        contentType: "application/json"
+    });
+//    $.post(
+//        "observations",
+//        JSON.stringify(observation)
+//    )
+}
 
 
 

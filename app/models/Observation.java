@@ -110,7 +110,7 @@ public class Observation extends Model {
 
     }
 
-    public static Finder<Long,Observation> find = new Finder<>(Long.class, Observation.class);
+    public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
 
     public static ObjectNode all(){
 
