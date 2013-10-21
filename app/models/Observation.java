@@ -130,8 +130,6 @@ public class Observation extends Model {
 
     public static ObjectNode getSquare(double north, double west, double south, double east){
 
-        List<Observation> allList = find.findList();
-
         List observationList = find
                 .where().gt("longitude", west)
                 .where().lt("longitude", east)
@@ -140,7 +138,7 @@ public class Observation extends Model {
                 .findList();
 
         ObjectNode result = Json.newObject();
-
+        @SuppressWarnings("unchecked")
         Iterator<Observation> it = observationList.iterator();
         int i = 0;
         while(it.hasNext()){
