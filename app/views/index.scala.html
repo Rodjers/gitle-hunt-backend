@@ -7,16 +7,25 @@
         <title>@title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" media="screen" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.css"))">
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+        <script src="@routes.WebJarAssets.at(WebJarAssets.locate("angular.min.js"))"></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQqIAaSyqBUauxZyyZ_3Kv3UGOzUfXkqo&sensor=false"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/maps.js")"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id="frame" class="container">
+        <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav main-navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand">GitleHunt</div>
+            </div>
+        </div>
+        </header>
+        <div class="navbar"></div>
+          <div class="frame">
             <div id="map-canvas"></div><br>
-            <form role="form" class="form-horizontal" onsubmit="registerObservation()">
+            <form role="form" class="form-horizontal">
                 <div class="form-group">
                     <label for="animal" class="control-label col-lg-2">Animal:</label>
                     <div class="col-lg-10">
@@ -34,14 +43,10 @@
                         <input type="number" class="form-control" id="amount" placeholder="100">
                     </div>
                 </div>
-                <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-10">
-                        <button type="submit" class="btn btn-default">Registrer observasjon</button>
+                        <button class="btn btn-default" onClick="registerObservation()">Registrer observasjon</button>
                     </div>
-                </div>
             </form>
-
-                @*<button class="btn btn-warning" onClick="registerObservation()">Registrer observasjon</button>*@
-        </div>
+          </div>
     </body>
 </html>

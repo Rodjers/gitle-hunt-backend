@@ -1,11 +1,17 @@
 #map-canvas {   height: 500px;}
-#frame {
+.frame {
     height: 100%;
-    width: 900px;
+    max-width: 940px;
     margin-left: auto;
-    margin-right: auto;}
-.registerForm {
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;}
+#registerForm {
     width: 200px;
     margin-left: auto;
     margin-right: auto;
+}
+.main-navbar {
+    background-color: #563d7c;
 }
