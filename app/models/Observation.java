@@ -142,6 +142,7 @@ public class Observation extends Model {
         Iterator<Observation> it = observationList.iterator();
         int i = 0;
         while(it.hasNext()){
+//            result.putAll(it.next().asJson());
             result.put(Integer.toString(i), it.next().asJson());
             i++;
         }
