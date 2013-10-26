@@ -30,7 +30,7 @@ function initialize() {
         var east = map.getBounds().getNorthEast().lng();
 
         $.getJSON( "square?north=" + north + "&south=" + south + "&west=" + west + "&east=" + east, function( data ) {
-            drawCollection(data, map);
+//            drawCollection(data, map);
         });
     });
 
@@ -76,7 +76,7 @@ function placeInfoWindow(marker, thisWindow) {
         thisWindow.open(map,marker);
     });
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+//google.maps.event.addDomListener(window, 'load', initialize);
 
 function registerObservation(animal, amount) {
 

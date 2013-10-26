@@ -16,6 +16,8 @@
         <script src="@routes.Assets.at("javascripts/app.js")"></script>
         <script src="@routes.Assets.at("javascripts/services.js")"></script>
         <script src="@routes.Assets.at("javascripts/controllers.js")"></script>
+        <script src="@routes.Assets.at("javascripts/angular-google-maps.js")"></script>
+
     </head>
     <body ng-controller="ObservationsCtrl">
         <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav main-navbar" role="navigation">
@@ -27,7 +29,9 @@
         </header>
         <div class="navbar"></div>
           <div class="frame">
-            <div id="map-canvas"></div><br>
+
+            <!--div id="map-canvas"></div-->
+              <google-map center="center" draggable="true" zoom="zoom" markers="markers" mark-click="true"></google-map><br>
             <form role="form" class="form-horizontal">
                 <div class="form-group">
                     <label for="animal" class="control-label col-lg-2">Animal:</label>
@@ -51,5 +55,5 @@
                     </div>
             </form>
           </div>
-    </body>
+   </body>
 </html>

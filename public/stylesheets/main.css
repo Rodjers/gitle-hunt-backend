@@ -1,4 +1,6 @@
 #map-canvas {   height: 500px;}
+.angular-google-map {   height: 500px;
+                        display: block;}
 .frame {
     height: 100%;
     max-width: 940px;
