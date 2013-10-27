@@ -32,7 +32,28 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
             markers: $scope.observations, // an array of markers,
             zoom: 8 // the zoom level
         });
-//        $scope.observations = observationModel.getObservations();
-//        console.log(JSON.stringify($scope.observations));
-//        var temp = 0;
+
+        $scope.registerObservation = function registerObservation(animal, amount) {
+
+
+            var observation = {};
+            var dateTime = new Date();
+            var timestamp = dateTime.getFullYear() + "-" + dateTime.getMonth() + "-" + dateTime.getDay() + " " +
+                dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds()
+            observation.animal = animal;
+            observation.amount = +(amount);
+            observation.timestamp = timestamp;
+            observation.latitude = $scope.markers[$scope.markers.length-1].latitude;
+            observation.longitude = $scope.markers[$scope.markers.length-1].longitude;
+
+            console.log(JSON.stringify(observation));
+
+
+            $.ajax({
+                type: "POST",
+                url: "observations",
+                data: JSON.stringify(observation),
+                contentType: "application/json"
+            });
+        }
     });
