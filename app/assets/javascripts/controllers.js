@@ -10,6 +10,7 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
     controller('ObservationsCtrl', function ($scope, observationModel) {
         $scope.observations = observationModel.getObservations();
 
+
         var i = 0;
         while ($scope.observations[i] != undefined){
             var infoWindow = '<div>' +
@@ -24,27 +25,32 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
             i++;
         }
 
+
+
         angular.extend($scope, {
             center: {
                 latitude: 59.5, // initial map center latitude
                 longitude: 7 // initial map center longitude
             },
             markers: $scope.observations, // an array of markers,
-            zoom: 8 // the zoom level
+            zoom: 8,
+            latitude: null,
+            longitude: null
         });
 
-        $scope.registerObservation = function registerObservation(animal, amount) {
+        $scope.registerObservation = function registerObservation(animal, amount, latitude, longitude) {
 
 
             var observation = {};
             var dateTime = new Date();
-            var timestamp = dateTime.getFullYear() + "-" + dateTime.getMonth() + "-" + dateTime.getDay() + " " +
-                dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds()
+            var date = dateTime.getFullYear() + "-" + dateTime.getMonth() + "-" + dateTime.getDay();
+            var time = dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds();
             observation.animal = animal;
             observation.amount = +(amount);
-            observation.timestamp = timestamp;
-            observation.latitude = $scope.markers[$scope.markers.length-1].latitude;
-            observation.longitude = $scope.markers[$scope.markers.length-1].longitude;
+            observation.date = date;
+            observation.time = time;
+            observation.latitude = latitude;
+            observation.longitude = longitude;
 
             console.log(JSON.stringify(observation));
 

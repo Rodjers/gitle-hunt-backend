@@ -9,7 +9,8 @@ create table observation (
   animal                    varchar(255) not null,
   longitude                 float not null,
   latitude                  float not null,
-  timestamp                 varchar(255),
+  date                      varchar(255),
+  time                      varchar(255),
   constraint pk_observation primary key (id))
 ;
 

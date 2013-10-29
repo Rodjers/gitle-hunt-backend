@@ -41,26 +41,16 @@ public class Observation extends Model {
     @Column(nullable = false)
     public double latitude;
 
-    @Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
-    public String timestamp;
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    public String date;
 
-//    public Observation(int amount, String animal, double longitude, double latitude){
-//
-//        this.amount = amount;
-//        this.animal = animal;
-//        this.longitude = longitude;
-//        this.latitude = latitude;
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//        Date date = new Date();
-//        this.timestamp = dateFormat.format(date);
-//
-//    }
+    @Formats.DateTime(pattern="HH:mm:ss")
+    public String time;
 
     public Observation(JsonNode observation) throws InvalidObservationException {
 
-        if(observation.size() > 5){
-            throw new InvalidObservationException(observation.size(), 5);
+        if(observation.size() > 6){
+            throw new InvalidObservationException(observation.size(), 6);
         }
 
         if(observation.has("amount")){
@@ -91,16 +81,33 @@ public class Observation extends Model {
             throw new InvalidObservationException("Parameter \'longitude\' is missing");
         }
 
-        if(observation.has("timestamp")){
-            String _timeStamp = observation.findPath("timestamp").textValue();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(observation.has("date")){
+            String _timeStamp = observation.findPath("date").textValue();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date;
             try {
                 date = dateFormat.parse(_timeStamp);
             } catch (ParseException e) {
-                throw new InvalidObservationException(_timeStamp + "is an invalid time format. Expected: yyy-MM-dd HH:mm:ss");
+                throw new InvalidObservationException(_timeStamp + "is an invalid date format. Expected: yyy-MM-dd");
             }
-            this.timestamp = dateFormat.format(date);
+            this.date = dateFormat.format(date);
+        }
+        else {
+            throw new InvalidObservationException("Parameter \'timestamp\' is missing");
+        }
+
+
+
+        if(observation.has("time")){
+            String _timeStamp = observation.findPath("time").textValue();
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            Date date;
+            try {
+                date = dateFormat.parse(_timeStamp);
+            } catch (ParseException e) {
+                throw new InvalidObservationException(_timeStamp + "is an invalid time format. Expected: HH:mm:ss");
+            }
+            this.time = dateFormat.format(date);
         }
         else {
             throw new InvalidObservationException("Parameter \'timestamp\' is missing");
@@ -159,7 +166,8 @@ public class Observation extends Model {
         result.put("animal", this.animal);
         result.put("longitude", this.longitude);
         result.put("latitude", this.latitude);
-        result.put("timestamp", this.timestamp);
+        result.put("date", this.date);
+        result.put("time", this.time);
 
 
 

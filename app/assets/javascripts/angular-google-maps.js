@@ -311,7 +311,7 @@
      * Map directive
      */
     googleMapsModule.directive("googleMap", ["$log", "$timeout", "$filter", function ($log, $timeout,
-                                                                                      $filter) {
+                                                                                      $filter, $parent) {
 
         var controller = function ($scope, $element) {
 
