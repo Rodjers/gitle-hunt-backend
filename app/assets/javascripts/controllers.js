@@ -52,7 +52,6 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
             observation.latitude = latitude;
             observation.longitude = longitude;
 
-            console.log(JSON.stringify(observation));
 
 
             $.ajax({
@@ -61,5 +60,15 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
                 data: JSON.stringify(observation),
                 contentType: "application/json"
             });
+            observation.infoWindow = '<div>' +
+                'Animal: ' +
+                animal +
+                '<br>' +
+                'Amount: ' +
+                amount +
+                '</div>';
+
+            $scope.observations.splice($scope.observations.length,0,observation);
+            document.getElementById('registerObservationForm').reset();
         }
     });
