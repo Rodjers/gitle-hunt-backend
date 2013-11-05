@@ -3,21 +3,16 @@
 # ~~~~
 
 # Home page
-GET           /                    controllers.Application.index()
-POST          /                    controllers.Application.wrongMethod()
-PUT           /                    controllers.Application.wrongMethod()
-DELETE        /                    controllers.Application.wrongMethod()
+GET         /                     controllers.Application.index()
+POST        /                     controllers.Application.wrongMethod()
 
-GET           /observations        controllers.Application.getObservations()
-POST          /observations        controllers.Application.registerObservation()
-PUT           /observations        controllers.Application.wrongMethod()
-DELETE        /observations        controllers.Application.wrongMethod()
+GET         /display              controllers.Application.showObservations()
 
-GET           /square              controllers.Application.getSquare(north: String, west: String, south: String, east: String)
-POST          /square              controllers.Application.wrongMethod()
-PUT           /square              controllers.Application.wrongMethod()
-DELETE        /square              controllers.Application.wrongMethod()
+GET         /observations         controllers.Application.getObservations()
+POST        /observations         controllers.Application.registerObservation()
+
+GET         /square               controllers.Application.getSquare(north: String, west: String, south: String, east: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file        controllers.Assets.at(path="/public", file)
-GET     /webjars/*file              controllers.WebJarAssets.at(file)
+GET         /assets/*file         controllers.Assets.at(path="/public", file)
+GET         /webjars/*file        controllers.WebJarAssets.at(file)

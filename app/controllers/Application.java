@@ -6,6 +6,7 @@ import controllers.exceptions.InvalidObservationException;
 import models.Observation;
 import play.mvc.*;
 import views.html.index;
+import views.html.observations;
 
 import java.util.Map;
 
@@ -19,6 +20,10 @@ public class Application extends Controller {
 
     public static Result index() {
         return ok(index.render("GitleHunt"));
+    }
+
+    public static Result showObservations() {
+        return ok(observations.render("GitleHunt"));
     }
 
 

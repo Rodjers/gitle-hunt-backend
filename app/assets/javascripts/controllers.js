@@ -32,7 +32,7 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
                 latitude: 59.5, // initial map center latitude
                 longitude: 7 // initial map center longitude
             },
-            markers: $scope.observations, // an array of markers,
+            markers: [], // an array of markers,
             zoom: 8,
             latitude: null,
             longitude: null
@@ -70,5 +70,7 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
 
             $scope.observations.splice($scope.observations.length,0,observation);
             document.getElementById('registerObservationForm').reset();
-        }
+        };
+
+
     });
