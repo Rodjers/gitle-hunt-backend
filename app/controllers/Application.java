@@ -33,13 +33,6 @@ public class Application extends Controller {
 
         JsonNode jsonBody = body.asJson();
 
-//
-//        int amount = jsonBody.findPath("amount").intValue();
-//        String animal = jsonBody.findPath("animal").textValue();
-//        double longitude = jsonBody.findPath("longitude").doubleValue();
-//        double latitude = jsonBody.findPath("latitude").doubleValue();
-//
-//        Observation observation = new Observation(amount, animal, longitude, latitude);
         Observation observation = null;
         try {
             observation = new Observation(jsonBody);

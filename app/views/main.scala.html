@@ -20,11 +20,16 @@
     </head>
     <body ng-controller="ObservationsCtrl">
         <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav main-navbar" role="navigation">
-            <ng-view/>
             <div class="container">
                 <div class="navbar-header">
                     <div class="navbar-brand">GitleHunt</div>
                 </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Register observation</a></li>
+                        <li><a href="/display">Display observations</a></li>
+                            </ul>
+                    </div>
             </div>
         </header>
         <div class="container">@content</div>
