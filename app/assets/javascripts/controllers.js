@@ -72,5 +72,17 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
             document.getElementById('registerObservationForm').reset();
         };
 
-
+        $scope.$watch("searchText.value", function(newValue){
+            if(newValue == undefined){
+                $scope.markers = JSON.parse(JSON.stringify($scope.observations));
+            }
+            else{
+                $scope.markers = [];
+                for(var i = 0;i<$scope.observations.length; i++){
+                    if($scope.observations[i].animal.indexOf(newValue) != -1){
+                        $scope.markers.splice(0,0,$scope.observations[i])
+                    }
+                }
+            }
+        });
     });

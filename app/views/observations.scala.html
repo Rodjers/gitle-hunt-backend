@@ -1,6 +1,20 @@
 @(title: String) @main("Observations") {
     <div class="navbar"></div>
     <div class="frame">
-        <google-map center="center" draggable="true" zoom="zoom" markers="observations" mark-click="true" latitude="latitude" longitude="longitude"></google-map><br>
+        <google-map center="center" draggable="true" zoom="zoom" markers="markers" mark-click="true" latitude="latitude" longitude="longitude"></google-map><br>
+        <form id="registerObservationForm" name="registerObservationForm" role="form" class="form-horizontal" ng-submit="registerObservation('{{currentObservation.animal}}',{{currentObservation.amount}},{{latitude}}, {{longitude}})" novalidate>
+            <div class="form-group">
+                <label for="animal" class="control-label col-lg-2">Animal:</label>
+                <div class="col-lg-10">
+                    <select required ng-model="searchText.value" class="form-control" id="animal">
+                        <option>Elg</option>
+                        <option>Reinsdyr</option>
+                        <option>Hjort</option>
+                        <option>Rådyr</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        </div>
     </div>
 }
