@@ -7,18 +7,32 @@
 
 
 angular.module('gitleHunt.controllers', ['gitleHunt.services']).
-    controller('ObservationsCtrl', function ($scope, observationModel) {
-        $scope.observations = observationModel.getObservations();
+    controller('ObservationsCtrl', function ($scope, $filter, observationModel) {
 
+        $scope.observationFilter = {};
+        $scope.observationFilter.startDate = "2013-01-01";
+        $scope.observationFilter.endDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+        $scope.observationFilter.animal = '';
+
+
+        $scope.observations = observationModel.getObservations();
 
         var i = 0;
         while ($scope.observations[i] != undefined){
+            var stringDate = $filter('date')($scope.observations[i].date, 'EEE d. MMM yyyy');
+            var stringTime = $filter('date')($scope.observations[i].time, 'HH:mm:ss');
             var infoWindow = '<div>' +
                 'Animal: ' +
                 $scope.observations[i].animal +
                 '<br>' +
                 'Amount: ' +
                 $scope.observations[i].amount +
+                '<br>' +
+                'Date: ' +
+                stringDate  +
+                '<br>' +
+                'Time: ' +
+                stringTime  +
                 '</div>';
 
             $scope.observations[i].infoWindow = infoWindow;
@@ -43,8 +57,8 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
 
             var observation = {};
             var dateTime = new Date();
-            var date = dateTime.getFullYear() + "-" + dateTime.getMonth() + "-" + dateTime.getDay();
-            var time = dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds();
+            var date = $filter('date')(dateTime, 'yyyy-MM-dd');
+            var time = $filter('date')(dateTime, 'HH:mm:ss');
             observation.animal = animal;
             observation.amount = +(amount);
             observation.date = date;
@@ -60,29 +74,11 @@ angular.module('gitleHunt.controllers', ['gitleHunt.services']).
                 data: JSON.stringify(observation),
                 contentType: "application/json"
             });
-            observation.infoWindow = '<div>' +
-                'Animal: ' +
-                animal +
-                '<br>' +
-                'Amount: ' +
-                amount +
-                '</div>';
 
-            $scope.observations.splice($scope.observations.length,0,observation);
             document.getElementById('registerObservationForm').reset();
         };
 
-        $scope.$watch("searchText.value", function(newValue){
-            if(newValue == undefined){
-                $scope.markers = JSON.parse(JSON.stringify($scope.observations));
-            }
-            else{
-                $scope.markers = [];
-                for(var i = 0;i<$scope.observations.length; i++){
-                    if($scope.observations[i].animal.indexOf(newValue) != -1){
-                        $scope.markers.splice(0,0,$scope.observations[i])
-                    }
-                }
-            }
+        $scope.$watch("observationFilter.animal", function(newValue){
+            $scope.markers = $filter('filterObservations')($scope.observations, newValue);
         });
     });
